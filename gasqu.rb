@@ -1,11 +1,22 @@
 class Gasqu < Formula
-  desc "gasqu"
-  homepage "https://github.com"
-  url "https://github.com/memm4587-ui/gasqu/releases/download/v1.0.0/gasqu"
-  sha256 "42ff7056772c09f0900777680e11a2a7fd70a82330272042dfb68e56a8af370c"
-  version "1.0.0"
+  desc "gasqu on Zig"
+  homepage "https://github.com/memm4587-ui/gasqu"
+  
+  
+  url "https://github.com/memm4587-ui/gasqu/releases/download/0.1.0/gasqu-0.1.0.tar.gz"
+  
+  
+  sha256 "c935b611d66906d8569618461518c7a95dd0ac3e89b42a41235c6fe370884aaf"
+  
+  version "0.1.0"
 
   def install
+  
     bin.install "gasqu"
+  end
+
+  test do
+  
+    system "#{bin}/gasqu", "--version"
   end
 end
