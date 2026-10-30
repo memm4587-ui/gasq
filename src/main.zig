@@ -82,10 +82,24 @@ pub fn getHost(get: std.mem.Allocator) ![]u8 {
     return hostname_cleaned;
 }
 
+// gasqu 0.2.0, create a output with CPU
+pub fn utgc(gut: std.mem.Allocator) ![]u8
+{
+var buffer: [16384]u8 = undefined;
+
+const readbuf = try std.fs.cwd().readFile("/proc/cpuinfo", &buffer);
+
+const realin = std.mem.IndexOf(readbuf, "model name");
+
+const saved_name = try gut.dupe(u8, realin);
+return saved_name;
+}
+
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
+    const gut = gpa.allocator();
 
     const system_info = try getNameVers(allocator);
     defer allocator.free(system_info);
@@ -96,12 +110,14 @@ pub fn main() !void {
     const host_info = try getHost(allocator);
     defer allocator.free(host_info);
 
-    std.debug.print("System info:\t{s}\n", .{system_info});
-    std.debug.print("Cores quantum:\t{}\n", .{highway_cores});
+    const namecpu_info = try utgc(gut);
+    defer gut.free(namecpu_info);
+
     std.debug.print("Hostname:\t{s}\n", .{host_info});
+    std.debug.print("System info:\t{s}\n", .{system_info});
+    std.debug.print("CPU: {s}\n", .{namecpu_info});
+    std.debug.print("Cores quantum:\t{}\n", .{highway_cores});
     std.debug.print("RAM Total:\t{} GB\n", .{ram.total});
     std.debug.print("RAM Available:\t{} GB\n", .{ram.avail});
     std.debug.print("RAM Used:\t{} GB\n", .{ram.used});
 }
-
-
