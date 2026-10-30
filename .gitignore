@@ -4,5 +4,6 @@
 #trash:
 *.o
 *.tar.gz
+*.swp
 
 #thats all :)
