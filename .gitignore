@@ -1,0 +1,8 @@
+# yo, this is gitignore
+#cash:
+.zig-cache/
+#trash:
+*.o
+*.tar.gz
+
+#thats all :)
