@@ -1,6 +1,7 @@
 # yo, this is gitignore
 #cash:
 .zig-cache/
+zig-out/
 #trash:
 *.o
 *.tar.gz

@@ -89,10 +89,16 @@ var buffer: [16384]u8 = undefined;
 
 const readbuf = try std.fs.cwd().readFile("/proc/cpuinfo", &buffer);
 
-const realin = std.mem.IndexOf(readbuf, "model name");
+if (std.mem.indexOf(u8, readbuf, "model name")) |index| 
+{
+        const line_slice = readbuf[index..];
+        const end_index = std.mem.indexOf(u8, line_slice, "\n") orelse line_slice.len;
+        const cpu_line = line_slice[0..end_index];
 
-const saved_name = try gut.dupe(u8, realin);
-return saved_name;
+        return try gut.dupe(u8, cpu_line);
+    }
+
+    return try gut.dupe(u8, "Unknown CPU");
 }
 
 pub fn main() !void {
